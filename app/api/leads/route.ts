@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { demoMode, leadSettings, property } from '@/data';
 import { scoreLead, validateLead } from '@/lib/leads';
-import { forwardLead, persistLead, rateLimit, readLeads } from '@/lib/leadStore';
+import { canPersistToDisk, forwardLead, persistLead, rateLimit, readLeads } from '@/lib/leadStore';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -58,14 +58,29 @@ export async function POST(request: Request) {
     meta: { ...validation.lead.meta, elapsedSeconds: elapsed },
   };
 
+  // Persistence is best-effort: on a serverless host (Vercel, Netlify, Lambda)
+  // the filesystem is read-only or ephemeral, so the webhook/CRM is the real
+  // record. Never fail the visitor — but never lose a lead quietly either.
   const persisted = await persistLead(lead);
+  const forwarded = !suspicious && Boolean(leadSettings.delivery.webhook);
   if (!suspicious) await forwardLead(lead);
+
+  const undelivered = !persisted && !forwarded;
+  if (undelivered) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `⚠ Lead ${lead.reference} was accepted but not stored anywhere. ` +
+        'Set LEAD_WEBHOOK_URL (CRM / automation / database) for serverless deployments — ' +
+        'the local file store does not survive on Vercel.',
+    );
+  }
 
   // Server-side trace — useful when a client is watching the dock during a demo.
   if (demoMode) {
     // eslint-disable-next-line no-console
     console.info(
-      `▸ lead received · ${lead.intent} · score ${lead.score} · ${Date.now() - started}ms · stored=${persisted}`,
+      `▸ lead received · ${lead.intent} · score ${lead.score} · ${Date.now() - started}ms · ` +
+        `stored=${persisted} · forwarded=${forwarded}`,
     );
   }
 
@@ -75,6 +90,13 @@ export async function POST(request: Request) {
       reference: lead.reference,
       lead: { ...lead, score: lead.score },
       stored: persisted,
+      forwarded,
+      ...(undelivered
+        ? {
+            deliveryWarning:
+              'This deployment has no persistent lead store configured. Set LEAD_WEBHOOK_URL.',
+          }
+        : {}),
     },
     { status: 201 },
   );

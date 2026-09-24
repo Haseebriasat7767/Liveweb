@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { analytics, contact, demoMode, leadSettings, property, site } from '@/data';
+import { canPersistToDisk } from '@/lib/leadStore';
 
 /**
  * GET /api/health — deployment sanity check.
@@ -25,6 +26,16 @@ export async function GET() {
         booking: contact.booking.available,
       },
       adminInbox: Boolean(process.env.LEAD_ADMIN_TOKEN) || demoMode,
+    },
+    deployment: {
+      host: process.env.VERCEL ? 'vercel' : process.env.NETLIFY ? 'netlify' : 'node-server',
+      vercelUrl: process.env.VERCEL_URL ?? null,
+      branch: process.env.VERCEL_GIT_COMMIT_REF ?? null,
+      /** False on serverless: configure LEAD_WEBHOOK_URL or leads cannot be kept. */
+      persistentLeadStore: canPersistToDisk,
+      warning: canPersistToDisk
+        ? null
+        : 'Serverless filesystem detected — set LEAD_WEBHOOK_URL so leads are not lost.',
     },
     time: new Date().toISOString(),
   });

@@ -11,12 +11,20 @@ import type { Lead } from './leads';
 
 const STORAGE = path.join(process.cwd(), leadSettings.delivery.storageFile);
 
+/**
+ * Serverless platforms mount a read-only or ephemeral filesystem, so the local
+ * NDJSON store is only dependable on a long-lived Node server (VPS, container,
+ * `next start`). On Vercel the webhook/CRM is the system of record.
+ */
+export const canPersistToDisk =
+  !process.env.VERCEL && !process.env.NETLIFY && !process.env.AWS_LAMBDA_FUNCTION_NAME;
+
 async function ensureStore() {
   await fs.mkdir(path.dirname(STORAGE), { recursive: true });
 }
 
 export async function persistLead(lead: Lead): Promise<boolean> {
-  if (!leadSettings.delivery.persistLocally) return false;
+  if (!leadSettings.delivery.persistLocally || !canPersistToDisk) return false;
   try {
     await ensureStore();
     await fs.appendFile(STORAGE, `${JSON.stringify(lead)}\n`, 'utf8');

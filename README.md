@@ -275,6 +275,79 @@ is confidential.
 
 ---
 
+---
+
+## 12b. Vercel — the three settings that break a fresh deploy
+
+A new Vercel project on this repository usually goes live on the first try, but three
+project settings cause the exact symptoms people report as *“the build worked and the URL
+404s”*. Check them in this order.
+
+### 1. The URL you are opening must belong to the project
+
+Every Vercel project gets its own domains. `liveweb.vercel.app` is **already owned by an
+unrelated account** (it serves a Vercel example app), so a project named `liveweb` never
+receives that hostname — it gets a scoped domain instead, of the form:
+
+```
+<project>-<team-slug>.vercel.app          # production alias
+<project>-<deployment-id>-<team-slug>.vercel.app   # immutable per-deployment URL
+```
+
+A hostname with **no deployment behind it** answers with Vercel's platform page —
+`This page doesn’t exist / 404 NOT_FOUND` — for every path, including `/api/health`.
+If the API route also 404s, the host is not your project; take the URL from
+**Project → Domains** (or the deployment's *Visit* button) rather than typing one.
+
+Quick check from any terminal:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://<your-deployment-url>/api/health
+# 200 → this is your deployment.   404 → this host is not serving your project.
+```
+
+### 2. Deployment Protection must be off for the link to be shareable
+
+New projects can ship with **Vercel Authentication** enabled, which makes every URL —
+preview *and* production — redirect to `vercel.com/login` for anyone who is not signed in
+to your team. The build is fine; the link simply is not public.
+
+> Settings → **Deployment Protection** → *Vercel Authentication* → **Disabled**
+> (or set protection to *Standard* so only previews are protected).
+
+Do this before sending the link to a client or a seller.
+
+### 3. Production Branch must exist
+
+Vercel deploys the **Production Branch** (defaults to `main`). This repository's app lives
+on `arena/01a0d47d-liveweb`, and there is no `main` branch — so if the project's
+production branch is still `main`, there is nothing to build for production and the
+production domain stays empty.
+
+> Settings → **Git** → *Production Branch* → select the branch that actually contains the
+> application, then **Redeploy**.
+
+Already-deployed URLs remain valid: the per-deployment hostname above always points at the
+build it was created for.
+
+### 4. Leads do not survive on a serverless filesystem
+
+`lib/leadStore.ts` writes to `.data/leads.ndjson`, which works on a long-running Node
+server (`next start`, a container, a VPS) but **not on Vercel**, where the filesystem is
+read-only or ephemeral. On serverless hosts the webhook is the system of record:
+
+```
+LEAD_WEBHOOK_URL=https://hooks.zapier.com/...   # or your CRM / database endpoint
+```
+
+The API now says so out loud: `GET /api/health` reports
+`deployment.persistentLeadStore`, and a submission that could be stored nowhere is logged
+as a warning in the deployment logs and returned as `deliveryWarning` — the visitor still
+gets their confirmation, and the operator gets told. A webhook is a two-minute change in
+`lib/leadStore.ts` if you'd rather write straight to Supabase, KV or Airtable.
+
+---
+
 ## 13. The next version
 
 The frontend is deliberately CMS-shaped: every string and asset lives in a typed config
