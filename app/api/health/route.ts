@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { analytics, contact, demoMode, leadSettings, property, site } from '@/data';
 import { canPersistToDisk } from '@/lib/leadStore';
+import { resolveDeploymentHost, resolveSiteUrl } from '@/lib/siteUrl';
 
 /**
  * GET /api/health — deployment sanity check.
@@ -28,7 +29,8 @@ export async function GET() {
       adminInbox: Boolean(process.env.LEAD_ADMIN_TOKEN) || demoMode,
     },
     deployment: {
-      host: process.env.VERCEL ? 'vercel' : process.env.NETLIFY ? 'netlify' : 'node-server',
+      host: resolveDeploymentHost(),
+      canonicalUrl: resolveSiteUrl(),
       vercelUrl: process.env.VERCEL_URL ?? null,
       branch: process.env.VERCEL_GIT_COMMIT_REF ?? null,
       /** False on serverless: configure LEAD_WEBHOOK_URL or leads cannot be kept. */

@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 
 import { agent, demoMode, property, site } from '@/data';
+import { resolveSiteUrl } from '@/lib/siteUrl';
 import { FloatingNav } from '@/components/navigation/FloatingNav';
 import { ChapterRail } from '@/components/navigation/ChapterRail';
 import { StickyConversion } from '@/components/navigation/StickyConversion';
@@ -35,7 +36,7 @@ const sans = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(resolveSiteUrl()),
   title: {
     default: property.seo.title,
     template: `%s | ${property.name}`,
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    url: site.url,
+    url: resolveSiteUrl(),
     siteName: `${property.name} — ${site.brand}`,
     title: property.seo.title,
     description: property.seo.description,

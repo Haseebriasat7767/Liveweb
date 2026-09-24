@@ -25,7 +25,13 @@ export const demoMode = (process.env.NEXT_PUBLIC_DEMO_MODE ?? 'true') !== 'false
 /** Analytics provider is swappable without touching components. */
 export type AnalyticsProvider = 'none' | 'console' | 'gtm' | 'plausible' | 'segment';
 export const analytics = {
-  provider: (process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER || 'console') as AnalyticsProvider,
+  /**
+   * Defaults to console logging in demo mode (so a client can watch events fire
+   * in devtools) and to silence in a live listing — change the env var once a
+   * real provider is wired up.
+   */
+  provider: (process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER ||
+    (demoMode ? 'console' : 'none')) as AnalyticsProvider,
   /** Set to your GTM / Segment container id when those providers are selected. */
   containerId: '',
   plausibleDomain: '',

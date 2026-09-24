@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { site } from '@/data';
+import { resolveSiteUrl } from '@/lib/siteUrl';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/'],
       },
     ],
-    sitemap: `${site.url}/sitemap.xml`,
-    host: site.url,
+    sitemap: `${resolveSiteUrl()}/sitemap.xml`,
+    host: resolveSiteUrl(),
   };
 }

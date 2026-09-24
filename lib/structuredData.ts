@@ -5,9 +5,10 @@
  */
 
 import { property, agent, contact, site, floorPlans } from '@/data';
+import { resolveSiteUrl } from './siteUrl';
 
 export function buildListingSchema() {
-  const url = site.url;
+  const url = resolveSiteUrl();
   const address = property.address;
 
   const floorSize = floorPlans
@@ -83,7 +84,7 @@ export function buildOrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'RealEstateAgent',
     name: agent.brokerage,
-    url: site.url,
+    url: resolveSiteUrl(),
     description: `${agent.brokerage} — ${agent.positioning}`,
     telephone: contact.phone.label,
     email: contact.email.label,
@@ -109,7 +110,7 @@ export function buildWebsiteSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: `${property.listingTitle} — ${property.name}`,
-    url: site.url,
+    url: resolveSiteUrl(),
     publisher: { '@type': 'Organization', name: agent.brokerage },
     inLanguage: 'en-US',
   };

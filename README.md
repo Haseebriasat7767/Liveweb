@@ -259,7 +259,7 @@ Any Node host works (Vercel, Netlify, Fly, a container). Copy `.env.example` →
 `.env.local` (or set the variables in the host dashboard) and set:
 
 ```
-NEXT_PUBLIC_SITE_URL            canonical URL
+NEXT_PUBLIC_SITE_URL            canonical URL (optional — see below)
 NEXT_PUBLIC_DEMO_MODE           false for a live listing
 NEXT_PUBLIC_ANALYTICS_PROVIDER  none | console | gtm | plausible | segment
 LEAD_EMAIL_RECIPIENT            where leads are addressed
@@ -268,6 +268,15 @@ LEAD_CRM_PROVIDER               label for the record
 LEAD_ADMIN_TOKEN                enables GET /api/leads in production
 NEXT_PUBLIC_PHONE / SMS / EMAIL / WHATSAPP_NUMBER / BOOKING_URL   contact channels
 ```
+
+> **Canonical URL is automatic on Vercel.** `lib/siteUrl.ts` resolves the origin in this
+> order: `NEXT_PUBLIC_SITE_URL` → `VERCEL_PROJECT_PRODUCTION_URL` → the configured
+> fallback. A fresh Vercel deployment therefore emits correct canonical, Open Graph,
+> Twitter, JSON-LD and sitemap URLs with no environment variables set. Set
+> `NEXT_PUBLIC_SITE_URL` once the property has its own domain.
+>
+> `GET /api/health` reports `deployment.canonicalUrl` so you can confirm what a
+> deployment believes its origin is.
 
 For a client hand-off, also swap `.data/leads.ndjson` for their CRM (the persistence call
 is isolated in `lib/leadStore.ts`) and put the property behind a password if the listing
