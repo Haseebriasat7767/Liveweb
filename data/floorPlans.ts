@@ -112,6 +112,8 @@ const GROUND: PlanRoom[] = [
     w: 240,
     h: 200,
     kind: 'principal',
+    imageSrc: '/images/room-dining.jpg',
+    imageAlt: 'Dining room at dusk with a long oak table and the glass wall open to the terrace',
     detail: 'Seats twelve with the glass wall open to the terrace.',
   },
   {
@@ -140,6 +142,8 @@ const GROUND: PlanRoom[] = [
     w: 160,
     h: 200,
     kind: 'private',
+    imageSrc: '/images/room-office.jpg',
+    imageAlt: 'Study with pale oak desk, steel shelving and garden glazing',
     detail: 'Screened from the main circulation; double aspect to garden.',
   },
   {
@@ -153,6 +157,8 @@ const GROUND: PlanRoom[] = [
     w: 320,
     h: 280,
     kind: 'private',
+    imageSrc: '/images/room-guest.jpg',
+    imageAlt: 'Guest bedroom with ivory linen and glazing onto a tropical garden',
     detail: 'En-suite guest accommodation on the ground floor.',
   },
   {
@@ -323,6 +329,8 @@ const LOWER: PlanRoom[] = [
     w: 400,
     h: 280,
     kind: 'principal',
+    imageSrc: '/images/room-entertainment.jpg',
+    imageAlt: 'Entertainment room with charcoal media lounge, backlit panelling and stone bar',
     detail: 'Media lounge, stone bar and climate-controlled wine display.',
   },
   {
@@ -349,6 +357,8 @@ const LOWER: PlanRoom[] = [
     w: 240,
     h: 180,
     kind: 'principal',
+    imageSrc: '/images/room-gym.jpg',
+    imageAlt: 'Private gym with oak and rubber flooring and glazing to a planted lightwell',
     detail: 'Glazing to a lightwell; rubber and oak flooring zones.',
   },
   {
@@ -401,6 +411,8 @@ const LOWER: PlanRoom[] = [
     w: 300,
     h: 300,
     kind: 'service',
+    imageSrc: '/images/room-garage.jpg',
+    imageAlt: 'Four-bay gallery garage in honed concrete and travertine',
     detail: 'Four-car gallery garage with EV charging and workshop bay.',
   },
   {

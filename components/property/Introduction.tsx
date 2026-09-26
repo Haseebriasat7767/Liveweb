@@ -35,8 +35,9 @@ export function Introduction() {
             {demoMode && (
               <Reveal variant="fade" delay={0.1}>
                 <p className="mt-8 max-w-[15rem] text-[10.5px] leading-relaxed text-graphite/40">
-                  Architect and interiors credits are placeholders — supplied per client in
-                  data/property.ts.
+                  Architect and interiors credits are placeholders, and all photography is
+                  demonstration artwork — supplied per client in data/property.ts and
+                  public/images.
                 </p>
               </Reveal>
             )}

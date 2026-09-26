@@ -74,10 +74,10 @@ export const property = {
       'Designed as a seamless relationship between architecture and its surroundings, the residence combines generous entertaining spaces with private retreats and carefully framed views.',
       'Every principal room faces the water. Every service space recedes. The result is a house that feels calm at any hour and any scale of gathering.',
     ],
-    imageSrc: '/images/intro.jpg',
+    imageSrc: '/images/aerial.jpg',
     imageAlt:
-      'Travertine stone meeting black steel-framed glass above a slender reflecting water channel',
-    caption: '01 / Arrival',
+      'Aerial view of the waterfront estate at golden hour, with the pool aligned to the bay, private dock and palm grove',
+    caption: '01 / The Estate',
     facts: [
       { label: 'Architect', value: 'Studio placeholder — replace in config' },
       { label: 'Interiors', value: 'Studio placeholder — replace in config' },
@@ -144,7 +144,7 @@ export const property = {
     eyebrow: 'Signature Spaces',
     heading: 'Rooms that behave differently from one another.',
     intro:
-      'Seven spaces define the daily experience of the residence. Select a space to see dimensions, features and its position in the plan.',
+      'Ten spaces define the daily experience of the residence. Select a space to see dimensions, features and its position in the plan.',
   },
 
   /* --------------------------------------------------------------- gallery */

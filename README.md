@@ -121,8 +121,13 @@ as `focal`/`objectPosition` in config) so new photography never breaks a composi
 Until then both players run a designed fallback (poster + still sequence) — never an
 empty frame.
 
-**Advisor portrait:** set `agent.photoSrc` (e.g. `/images/agent.jpg`). Left `null`, the
-section renders a composed monogram panel instead of a broken image.
+**Advisor portrait:** `agent.photoSrc` ships set to `/images/agent.jpg` (demonstration
+artwork). Replace the file with a real portrait, or set the value to `null` and the section
+renders a composed monogram panel instead of a broken image.
+
+**Imagery set:** 19 files in `public/images` — hero, aerial estate, three architectural-story
+frames, ten room frames and the advisor portrait. Every file is referenced and every reference
+resolves; the gallery, the spaces index and the floor-plan dossier all read from `data/`.
 
 ---
 
@@ -223,6 +228,10 @@ markers and the notices disappear.
 * Floor plans and travel times are labelled indicative/not to scale; no measurements are
   invented as surveyed data.
 * No testimonials, no awards, no fake statistics, no fake reviews anywhere in the build.
+* **All photography is synthetic demonstration artwork**, generated for this build — it is not
+  photography of a real property and must be replaced with the client's own commissioned
+  imagery before a live listing. The same applies to the advisor portrait. This is stated in
+  the README, in the demo-mode note beside the introduction, and flagged in `data/agent.ts`.
 
 ---
 

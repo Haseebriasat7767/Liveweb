@@ -22,7 +22,7 @@ export const agent = {
    * and the section renders the photograph; leave null and it renders the
    * designed monogram panel instead — never a broken image.
    */
-  photoSrc: null as string | null,
+  photoSrc: '/images/agent.jpg' as string | null,
   photoAlt: 'Portrait of James Carter, luxury property advisor',
   languages: ['English', 'Spanish', 'Portuguese'],
 

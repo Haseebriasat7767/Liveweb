@@ -14,8 +14,9 @@ import { track } from '@/lib/analytics';
 /** Frame rows: asymmetric widths, aligned heights — a magazine, not a grid. */
 const ROWS: Array<{
   height: string;
-  items: Array<{ id: string; span: string; aside?: 'quote' | 'index' }>;
+  items: Array<{ id: string; span: string }>;
 }> = [
+  // Full-bleed establishing frame
   { height: 'h-[clamp(240px,50vw,720px)]', items: [{ id: 'g01', span: 'col-span-12' }] },
   {
     height: 'h-[clamp(260px,34vw,520px)]',
@@ -27,8 +28,8 @@ const ROWS: Array<{
   {
     height: 'h-[clamp(260px,36vw,560px)]',
     items: [
-      { id: 'g05', span: 'col-span-12 md:col-span-7' },
       { id: 'g04', span: 'col-span-12 md:col-span-5' },
+      { id: 'g05', span: 'col-span-12 md:col-span-7' },
     ],
   },
   {
@@ -38,11 +39,27 @@ const ROWS: Array<{
       { id: 'g07', span: 'col-span-12 md:col-span-6' },
     ],
   },
+  // Wide band — the water, given room to breathe
+  { height: 'h-[clamp(200px,28vw,420px)]', items: [{ id: 'g08', span: 'col-span-12' }] },
+  {
+    height: 'h-[clamp(240px,32vw,480px)]',
+    items: [
+      { id: 'g09', span: 'col-span-12 md:col-span-5' },
+      { id: 'g10', span: 'col-span-12 md:col-span-7' },
+    ],
+  },
+  {
+    height: 'h-[clamp(260px,34vw,520px)]',
+    items: [
+      { id: 'g11', span: 'col-span-12 md:col-span-7' },
+      { id: 'g12', span: 'col-span-12 md:col-span-5' },
+    ],
+  },
   {
     height: 'h-[clamp(220px,30vw,440px)]',
     items: [
-      { id: 'g08', span: 'col-span-12 md:col-span-8' },
-      { id: 'g09', span: 'col-span-12 md:col-span-4' },
+      { id: 'g13', span: 'col-span-12 md:col-span-8' },
+      { id: 'g14', span: 'col-span-12 md:col-span-4' },
     ],
   },
 ];
